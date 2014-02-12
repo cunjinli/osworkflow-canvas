@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>test</title>
+<script type="text/javascript" src="jquery-1.8.3.js"></script>
+<script type="text/javascript" src="excanvas.js"></script>
+<script type="text/javascript" src="wf.js"></script>
+
+<script type="text/javascript">
+$(function() {
+	
+	$("#showWfBtn").click(function() {
+		// var xmlStr = $("#wfxmlText").val();
+		// var lytStr = $("#wflytText").val();
+    var xmlStr = $("#wfxml").html().replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+    var lytStr = $("#wflyt").html().replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+		var currentSteps = eval("([" + $("#currentStepsText").val() + "])");
+		var historySteps = eval("([" + $("#historyStepsText").val() + "])");
+		var canvas = $("#canvas");
+
+		drawWf(canvas[0], xmlStr, lytStr, currentSteps, historySteps);
+	});
+});
+</script>
+
+</head>
+<body>
+
+当前步骤(用半角 ","号隔开)：
+<br/>
+<input id="currentStepsText" type="text" value="2,3"/>
+
+<input id="showWfBtn" type="button" value="生成流程图"/>
+
+<br/>
+<textarea id="wfxml" style="display:none;">
+<?xml version="1.0"?>
+<workflow>
+  <initial-actions>
+    <action id="0" name="填写资料">
+      <results>
+        <unconditional-result id="30" old-status="Finished" status="Queued" step="1"/>
+      </results>
+    </action>
+  </initial-actions>
+  <steps>
+    <step id="1" name="资料库">
+      <actions>
+        <action id="10" name="提交审核" view="">
+          <results>
+            <unconditional-result id="31" old-status="Finished" status="Queued" step="2"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="2" name="主管审核">
+      <actions>
+        <action id="12" name="审批通过" view="审批通过">
+          <results>
+            <unconditional-result id="33" old-status="Finished" status="Queued" step="3"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    
+    <step id="3" name="经理审核">
+      <actions>
+        <action id="14" name="审批通过" view="审批通过">
+          <results>
+            <unconditional-result id="34" old-status="Finished" status="Queued" step="5"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="5" name="结束">
+      
+    </step>
+  </steps>
+</workflow>
+</textarea>
+<textarea id="wflyt" style="display:none;">
+<?xml version="1.0"?>
+<layout>
+  <cell id="0" row="3" col="1" type="InitialActionCell" />
+  <cell id="1" row="2" col="3" type="StepCell" />
+  <cell id="2" row="2" col="2" type="StepCell" />
+  <cell id="3" row="4" col="2" type="StepCell" />
+  <cell id="5" row="5" col="2" type="StepCell" />
+  
+</layout>
+</textarea>
+<canvas id="canvas" width="500" height="500">
+</canvas>
+</body>
+</html>
